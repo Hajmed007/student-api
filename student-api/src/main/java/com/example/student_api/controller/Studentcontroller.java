@@ -32,7 +32,14 @@ public class Studentcontroller {
     @DeleteMapping("/delete/{id}")
     public String deletestd(@PathVariable int id)
     {
-        list.remove(id);
-         return "Student {id} Deleted ";
+          boolean remove =list.removeIf(std -> std.getId() == id);
+          if(remove)
+          {
+            return "Student " + id + " Deleted";
+          }
+          else
+          {
+            return "Student " + id + " Not found";
+          }  
     }
 }
