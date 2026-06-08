@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.student_api.entity.Student;
@@ -42,5 +43,14 @@ public class StudentController {
           {
             return ResponseEntity.status(404).body( "Student " + id + " Not found");
           }  
+    }
+    @GetMapping("/search")
+    public List<Student> searchStudent(@RequestParam String name)
+    {
+      return list.stream()
+      .filter(s->s.getName()
+      .toLowerCase()
+      .contains(name.toLowerCase()))
+      .toList();
     }
 }
