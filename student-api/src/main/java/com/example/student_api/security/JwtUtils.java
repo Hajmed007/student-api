@@ -14,7 +14,7 @@ public class JwtUtils {
     {
        return Jwts.builder()
                   .setSubject(name)
-                  .setExpiration(new Date(System.currentTimeMillis + 3600000))
+                  .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                   .signWith(SignatureAlgorithm.HS384, "secretkey")
                   .compact();
     }
