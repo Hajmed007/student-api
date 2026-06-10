@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +21,13 @@ import com.example.student_api.security.JwtUtils;
 public class AuthController {
     @Autowired
     JwtUtils jwtutils;
+    @Autowired
+    PasswordEncoder passwordEncoder;
     ArrayList<User> list = new ArrayList<>();
     @PostMapping("/register")
     public String register(@RequestBody User  user)
     {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
        list.add(user);
        return "User Registrated ";
     }
@@ -32,10 +36,10 @@ public class AuthController {
     {
        boolean found = list.stream()
           .filter(u->u.getUsername().equals(user.getUsername())
-           && u.getPassword().equals(user.getPassword()))
+           &&  passwordEncoder.matches(user.getPassword(),u.getPassword()))
            .findFirst()
            .isPresent();
-
+         
            if(found)
            {
              return ResponseEntity.ok(jwtutils.generateToken(user.getUsername()));
