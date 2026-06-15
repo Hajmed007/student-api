@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.student_api.entity.Student;
+import com.example.student_api.security.StudentNotFoundException;
 
 @RestController
 @RequestMapping("/api")
@@ -31,6 +32,15 @@ public class StudentController {
     {
         return list;
     }
+    @GetMapping("/get/{id}")
+       public ResponseEntity<Student> getStudentById(@PathVariable int id) throws StudentNotFoundException {
+         Student student = list.stream()
+        .filter(s -> s.getId() == id)
+        .findFirst()
+        .orElseThrow(() -> new StudentNotFoundException("Student with id " + id + " not found"));
+         return ResponseEntity.ok(student);
+      } 
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable int id)
     {
