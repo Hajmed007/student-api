@@ -14,24 +14,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.student_api.entity.Student;
+import com.example.student_api.security.LogAPI;
 import com.example.student_api.security.StudentNotFoundException;
 
 @RestController
 @RequestMapping("/api")
 public class StudentController {
     ArrayList<Student> list = new ArrayList<>();
-
+    
     @PostMapping("/add")
     public String addStudent(@RequestBody Student std)
     {
       list.add(std);
       return "Student Added Sucessfully";
     }
+    
     @GetMapping("/get")
     public List<Student> getStudents()
     {
         return list;
     }
+    
     @GetMapping("/get/{id}")
        public ResponseEntity<Student> getStudentById(@PathVariable int id) throws StudentNotFoundException {
          Student student = list.stream()
@@ -40,7 +43,7 @@ public class StudentController {
         .orElseThrow(() -> new StudentNotFoundException("Student with id " + id + " not found"));
          return ResponseEntity.ok(student);
       } 
-
+    
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable int id)
     {
@@ -54,6 +57,7 @@ public class StudentController {
             return ResponseEntity.status(404).body( "Student " + id + " Not found");
           }  
     }
+    
     @GetMapping("/search")
     public List<Student> searchStudent(@RequestParam String name)
     {
