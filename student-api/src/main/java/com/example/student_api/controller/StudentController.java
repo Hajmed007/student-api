@@ -14,21 +14,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.student_api.entity.Student;
-import com.example.student_api.security.LogAPI;
 import com.example.student_api.security.StudentNotFoundException;
 
 @RestController
 @RequestMapping("/api")
 public class StudentController {
     ArrayList<Student> list = new ArrayList<>();
-    
+   
     @PostMapping("/add")
     public String addStudent(@RequestBody Student std)
     {
       list.add(std);
       return "Student Added Sucessfully";
     }
-    
+  
     @GetMapping("/get")
     public List<Student> getStudents()
     {
